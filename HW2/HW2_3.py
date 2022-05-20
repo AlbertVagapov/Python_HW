@@ -1,54 +1,44 @@
 # Создайте программу для игры в "Крестики-нолики".
 
-board = range(1,10)
+list = [1,2,3,4,5,6,7,8,9]
+game = lambda mass: print(' | ', mass[0], ' | ', mass[1], ' | ', mass[2], ' | \n | ', mass[3], ' | ', mass[4], ' | ', mass[5], ' | \n | ', mass[6], ' | ', mass[7], ' | ', mass[8], ' | ')
+k = 0
 
-def draw_board(board):
-    print ("-------------")
-    for i in range(3):
-        print ("|", board[0+i*3], "|", board[1+i*3], "|", board[2+i*3], "|")
-        print ("-------------")
+def win(mass):
+    if (mass[0] == mass[1] == mass[2] == 'X') or (mass[3] == mass[4] == mass[5] == 'X')  or (mass[6] == mass[7] == mass[8] == 'X') or (mass[0] == mass[3] == mass[6] == 'X')  or (mass[1] == mass[4] == mass[7] == 'X') or (mass[2] == mass[5] == mass[8] == 'X')  or (mass[0] == mass[4] == mass[8] == 'X')  or (mass[2] == mass[4] == mass[6] == 'X'):
+        return 1        
+    elif (mass[0] == mass[1] == mass[2] == 'O') or (mass[3] == mass[4] == mass[5] == 'O')  or (mass[6] == mass[7] == mass[8] == 'O') or (mass[0] == mass[3] == mass[6] == 'O')  or (mass[1] == mass[4] == mass[7] == 'O') or (mass[2] == mass[5] == mass[8] == 'O')  or (mass[0] == mass[4] == mass[8] == 'O')  or (mass[2] == mass[4] == mass[6] == 'O'):
+        return 1        
+    else: return 0
 
-def take_input(player_token):
-    valid = False
-    while not valid:
-        player_answer = raw_input("Куда поставим " + player_token+"? ")
-        try:
-            player_answer = int(player_answer)
-        except:
-            print ("Некорректный ввод. Вы уверены, что ввели число?")
-            continue
-        if player_answer >= 1 and player_answer <= 9:
-            if (str(board[player_answer-1]) not in "XO"):
-                board[player_answer-1] = player_token
-                valid = True
-            else:
-                print ("Эта клеточка уже занята")
-        else:
-            print ("Некорректный ввод. Введите число от 1 до 9 чтобы походить.")
-def check_win(board):
-    win_coord = ((0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6))
-    for each in win_coord:
-        if board[each[0]] == board[each[1]] == board[each[2]]:
-            return board[each[0]]
-    return False
-
-def main(board):
-    counter = 0
-    win = False
-    while not win:
-        draw_board(board)
-        if counter % 2 == 0:
-            take_input("X")
-        else:
-            take_input("O")
-        counter += 1
-        if counter > 4:
-            tmp = check_win(board)
-            if tmp:
-                print (tmp, "выиграл!")
-                win = True
-                break
-        if counter == 9:
-            print("Ничья!")
-            break
-    draw_board(board)        
+print("Игра крестики - нолики")
+game(list)
+while k <= 9:
+    k += 1
+    x1 = int(input("Ход игрока №1. В какое поле ставим X: "))
+    if list[x1-1] == 'X' or list[x1-1] == 'O':
+        x1 = int(input("Поле занято. Введите номер свободного поля: "))
+        list[x1-1] = 'X'
+    else:
+        list[x1-1] = 'X'
+    game(list)    
+    if win(list):
+        print('Игрок №1 победил!') 
+        break
+    if k == 9: 
+        break
+    k += 1
+    x1 = int(input("Ход игрока №2. В какое поле ставим O: "))
+    if list[x1-1] == 'X' or list[x1-1] == 'O':
+        x1 = int(input("Поле занято. Введите номер свободного поля: "))
+        list[x1-1] = 'O'
+    else:
+        list[x1-1] = 'O'
+    game(list)    
+    if win(list): 
+        print('Игрок №2 победил!')
+        break
+if win(list): 
+    print("Спасибо за игру!") 
+else:
+    print("Ничья! Спасибо за игру!") 
